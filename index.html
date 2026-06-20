@@ -21439,7 +21439,7 @@ function App() {
   // Auth gate — only the 'Enseignant' group is gated. Vitrine + Parent are open.
   const isAuthed = useAuth();
   const needsAuth = SCREENS[screen].grp === 'Enseignant' && !isAuthed;
-  const hideChrome = ['parent-home', 'parent-thread', 'parent-report', 'whatsapp-share'].includes(screen); // only the parent APP stays chrome-free; discovery screens keep the Écrans nav
+  const hideChrome = false; // Keep demo arrows and the screens menu available on every route, including parent mobile screens.
 
   return /*#__PURE__*/React.createElement("div", {
     style: {
