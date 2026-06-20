@@ -16895,6 +16895,7 @@ function ParentHome({
   const parentRoute = (id || 'pa1').split('/');
   const pid = parentRoute[0] || 'pa1';
   const routeTab = ['accueil', 'suivi', 'messages', 'profil'].includes(parentRoute[1]) ? parentRoute[1] : null;
+  const routeThreadId = parentRoute[2] || null;
   const parent = Nav.parentById(pid);
   const initTab = routeTab || window._parentTab;
   window._parentTab = null;
@@ -16903,7 +16904,10 @@ function ParentHome({
     if (routeTab && routeTab !== tab) setTab(routeTab);
   }, [routeTab]);
   const [notifOpen, setNotifOpen] = React.useState(false);
-  const [openTid, setOpenTid] = React.useState(null);
+  const [openTid, setOpenTid] = React.useState(routeThreadId);
+  React.useEffect(() => {
+    setOpenTid(routeThreadId);
+  }, [routeThreadId]);
   const [selSubj, setSelSubj] = React.useState(null);
   const [editOpen, setEditOpen] = React.useState(false);
   const [selKid, setSelKid] = React.useState(null);
@@ -21161,6 +21165,12 @@ const SCREENS = {
     grp: 'Parent',
     phone: true
   },
+  'parent-conversation': {
+    c: 'ParentHome',
+    t: 'Parent · Conversation',
+    grp: 'Parent',
+    phone: true
+  },
   'parent-thread': {
     c: 'ParentThread',
     t: 'Fil parent',
@@ -21285,7 +21295,7 @@ const SCREENS = {
     grp: 'Vitrine'
   }
 };
-const FLOW = ['landing', 'parent-search', 'tutor-profile', 'shortlist', 'inquiry', 'dashboard', 'messages', 'thread', 'group-detail', 'session-entry', 'student-profile', 'report-gen', 'parent-report', 'whatsapp-share', 'parent-home', 'parent-suivi', 'parent-messages', 'parent-profile', 'parent-thread'];
+const FLOW = ['landing', 'parent-search', 'tutor-profile', 'shortlist', 'inquiry', 'dashboard', 'messages', 'thread', 'group-detail', 'session-entry', 'student-profile', 'report-gen', 'parent-report', 'whatsapp-share', 'parent-home', 'parent-suivi', 'parent-messages', 'parent-profile', 'parent-conversation'];
 const FLOW_PARAMS = {
   'tutor-profile': 't1',
   inquiry: 't1',
@@ -21299,7 +21309,7 @@ const FLOW_PARAMS = {
   'parent-suivi': 'pa1/suivi',
   'parent-messages': 'pa1/messages',
   'parent-profile': 'pa1/profil',
-  'parent-thread': 'th1'
+  'parent-conversation': 'pa1/messages/th-phys'
 };
 function defaultParamForScreen(id) {
   return FLOW_PARAMS[id] || null;
