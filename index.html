@@ -2969,7 +2969,9 @@ function messagesAll() {
   return _entity('messages');
 }
 function messagesOfThread(tid) {
-  return messagesAll().filter(m => m.threadId === tid).sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
+  const list = messagesAll().filter(m => m.threadId === tid);
+  const seeded = (NAV.messages || []).filter(m => m.threadId === tid);
+  return (list.length ? list : seeded).sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
 }
 function unreadCountForTutor() {
   return threadsAll().filter(t => (t.tutorId || 't1') === 't1').reduce((n, t) => n + (t.unreadCount || 0), 0);
@@ -21295,7 +21297,7 @@ const SCREENS = {
     grp: 'Vitrine'
   }
 };
-const FLOW = ['landing', 'parent-search', 'tutor-profile', 'shortlist', 'inquiry', 'dashboard', 'messages', 'thread', 'group-detail', 'session-entry', 'student-profile', 'report-gen', 'parent-report', 'whatsapp-share', 'parent-home', 'parent-suivi', 'parent-messages', 'parent-profile', 'parent-conversation'];
+const FLOW = ['landing', 'parent-search', 'tutor-profile', 'shortlist', 'inquiry', 'dashboard', 'messages', 'thread', 'group-detail', 'session-entry', 'student-profile', 'report-gen', 'parent-report', 'whatsapp-share', 'parent-home', 'parent-suivi', 'parent-messages', 'parent-conversation', 'parent-profile'];
 const FLOW_PARAMS = {
   'tutor-profile': 't1',
   inquiry: 't1',
