@@ -2042,7 +2042,7 @@ NAV.payments = [
 // ---- PARENT SHORTLIST (présélection) — saved tutors per anonymous parent ----
 // Persisted in localStorage under a single anonymous "current parent" key.
 // For the demo, this is just an array of tutorIds.
-NAV.shortlist = [];
+NAV.shortlist = ['t1', 't2', 't3'];
 
 // Inquiry status tracking for the parent side. Each entry mirrors a thread but
 // from the parent's POV: pending / accepted / declined. After acceptance, the
@@ -3206,7 +3206,7 @@ function removeTodo(id) {
 // SHORTLIST / PRÉSÉLECTION ---------------------------------------
 function shortlistAll() {
   const d = NavStore.get();
-  return d.shortlist || [];
+  return d.shortlist || NAV.shortlist || [];
 }
 function shortlistHas(tutorId) {
   return shortlistAll().includes(tutorId);
