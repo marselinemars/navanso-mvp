@@ -362,6 +362,23 @@ a{color:inherit;text-decoration:none}
   box-shadow:0 0 0 3px rgba(236,122,30,.3);flex:none}
 .proto-pill span{font-size:12px;font-weight:600;letter-spacing:.01em;white-space:nowrap}
 .proto-pill .sub{opacity:.6;font-weight:500}
+.demo-controls{position:fixed;right:20px;bottom:20px;z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+
+@media (max-width: 640px){
+  .proto-pill{display:none}
+  .demo-controls{
+    top:calc(env(safe-area-inset-top, 0px) + 8px) !important;
+    right:8px !important;
+    bottom:auto !important;
+    gap:8px !important;
+  }
+  .demo-controls > .row.gap-8{gap:6px}
+  .demo-controls .card{box-shadow:var(--sh-2)}
+  .demo-controls .btn-primary{padding:10px 13px !important}
+  .demo-controls .btn-primary svg{width:17px;height:17px}
+  .demo-controls .tnum{font-size:11px}
+  .app-scroll{padding-top:60px}
+}
 
 /* before / after comparison block */
 .cmp{border-radius:18px;overflow:hidden;border:1px solid var(--line)}
@@ -21568,6 +21585,7 @@ function App() {
   }), /*#__PURE__*/React.createElement("span", null, appUi('proto'), " ", /*#__PURE__*/React.createElement("span", {
     className: "sub"
   }, appUi('protoSub')))), !embed && !hideChrome && /*#__PURE__*/React.createElement("div", {
+    className: "demo-controls",
     style: {
       position: 'fixed',
       right: 20,
