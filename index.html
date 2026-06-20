@@ -10054,7 +10054,10 @@ function Dashboard({
   // Pick the very next planned session across all groups for the hero card.
   const allSessions = Nav.sessionsAll();
   const upcoming = allSessions.filter(s => s.status === 'planned').sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-  const nextSess = upcoming[0] || null;
+  const seededUpcoming = (NAV.sessions || []).filter(s => s.status === 'planned').sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  const nextSess = upcoming[0] || seededUpcoming[0] || null;
+  const upcomingCount = upcoming.length || (nextSess ? 1 : 0);
+  const pendingReportsCount = Nav.reportsPending().length || NAV.dashboard?.reportsPending || 0;
   const nextGroup = nextSess ? Nav.groupById(nextSess.groupId) : null;
   const nextCarry = nextSess ? Nav.carryOverTodos(nextSess.groupId) : [];
   const nextTodos = nextSess ? Nav.todosBySession(nextSess.id) : [];
@@ -10098,19 +10101,19 @@ function Dashboard({
     style: {
       color: 'var(--ink)'
     }
-  }, upcoming.length, " حصّة مُبرمَجة"), " و ", /*#__PURE__*/React.createElement("b", {
+  }, upcomingCount, " حصّة مُبرمَجة"), " و ", /*#__PURE__*/React.createElement("b", {
     style: {
       color: 'var(--orange-600)'
     }
-  }, Nav.reportsPending().length, " تقرير", Nav.reportsPending().length > 1 ? '' : '', " لإرسالها"), ".") : /*#__PURE__*/React.createElement(React.Fragment, null, "Vous avez ", /*#__PURE__*/React.createElement("b", {
+  }, pendingReportsCount, " تقرير", pendingReportsCount > 1 ? '' : '', " لإرسالها"), ".") : /*#__PURE__*/React.createElement(React.Fragment, null, "Vous avez ", /*#__PURE__*/React.createElement("b", {
     style: {
       color: 'var(--ink)'
     }
-  }, upcoming.length, " séance", upcoming.length > 1 ? 's' : '', " planifiée", upcoming.length > 1 ? 's' : ''), " et ", /*#__PURE__*/React.createElement("b", {
+  }, upcomingCount, " séance", upcomingCount > 1 ? 's' : '', " planifiée", upcomingCount > 1 ? 's' : ''), " et ", /*#__PURE__*/React.createElement("b", {
     style: {
       color: 'var(--orange-600)'
     }
-  }, Nav.reportsPending().length, " rapport", Nav.reportsPending().length > 1 ? 's' : '', " à envoyer"), ".")), nextSess && /*#__PURE__*/React.createElement("button", {
+  }, pendingReportsCount, " rapport", pendingReportsCount > 1 ? 's' : '', " à envoyer"), ".")), nextSess && /*#__PURE__*/React.createElement("button", {
     onClick: () => go(heroAct.screen, heroAct.param),
     className: "card",
     style: {
