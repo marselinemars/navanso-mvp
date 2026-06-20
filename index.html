@@ -16892,11 +16892,16 @@ function ParentHome({
   useStore();
   useLang();
   const isAr = NavI18n.lang === 'ar';
-  const pid = id || 'pa1';
+  const parentRoute = (id || 'pa1').split('/');
+  const pid = parentRoute[0] || 'pa1';
+  const routeTab = ['accueil', 'suivi', 'messages', 'profil'].includes(parentRoute[1]) ? parentRoute[1] : null;
   const parent = Nav.parentById(pid);
-  const initTab = window._parentTab;
+  const initTab = routeTab || window._parentTab;
   window._parentTab = null;
   const [tab, setTab] = React.useState(initTab || 'accueil');
+  React.useEffect(() => {
+    if (routeTab && routeTab !== tab) setTab(routeTab);
+  }, [routeTab]);
   const [notifOpen, setNotifOpen] = React.useState(false);
   const [openTid, setOpenTid] = React.useState(null);
   const [selSubj, setSelSubj] = React.useState(null);
@@ -18140,6 +18145,12 @@ function ParentHome({
       key: key,
       onClick: () => {
         setTab(key);
+        go(({
+          accueil: 'parent-home',
+          suivi: 'parent-suivi',
+          messages: 'parent-messages',
+          profil: 'parent-profile'
+        }[key]) || 'parent-home', `${pid}/${key}`);
       },
       style: {
         flex: 1,
@@ -21132,6 +21143,24 @@ const SCREENS = {
     grp: 'Parent',
     phone: true
   },
+  'parent-suivi': {
+    c: 'ParentHome',
+    t: 'Parent · Suivi',
+    grp: 'Parent',
+    phone: true
+  },
+  'parent-messages': {
+    c: 'ParentHome',
+    t: 'Parent · Messages',
+    grp: 'Parent',
+    phone: true
+  },
+  'parent-profile': {
+    c: 'ParentHome',
+    t: 'Parent · Profil',
+    grp: 'Parent',
+    phone: true
+  },
   'parent-thread': {
     c: 'ParentThread',
     t: 'Fil parent',
@@ -21256,7 +21285,7 @@ const SCREENS = {
     grp: 'Vitrine'
   }
 };
-const FLOW = ['landing', 'parent-search', 'tutor-profile', 'shortlist', 'inquiry', 'dashboard', 'messages', 'thread', 'group-detail', 'session-entry', 'student-profile', 'report-gen', 'parent-report', 'whatsapp-share', 'parent-home', 'parent-thread'];
+const FLOW = ['landing', 'parent-search', 'tutor-profile', 'shortlist', 'inquiry', 'dashboard', 'messages', 'thread', 'group-detail', 'session-entry', 'student-profile', 'report-gen', 'parent-report', 'whatsapp-share', 'parent-home', 'parent-suivi', 'parent-messages', 'parent-profile', 'parent-thread'];
 const FLOW_PARAMS = {
   'tutor-profile': 't1',
   inquiry: 't1',
@@ -21266,7 +21295,10 @@ const FLOW_PARAMS = {
   'student-profile': 's1',
   'report-gen': 's1',
   'parent-report': 'r-yacine-mai-2026',
-  'parent-home': 'pa1',
+  'parent-home': 'pa1/accueil',
+  'parent-suivi': 'pa1/suivi',
+  'parent-messages': 'pa1/messages',
+  'parent-profile': 'pa1/profil',
   'parent-thread': 'th1'
 };
 function defaultParamForScreen(id) {
